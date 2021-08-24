@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Entity
@@ -28,12 +25,34 @@ public class Board  extends TimeEntity{
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    /*
+    * 그룹 번호 group
+    * 그룹 내 순서 order
+    * 들여쓰기 indent
+    * */
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long gno;
+
+    @Column
+    private Long ono = 0L;
+
+    @Column
+    private Long indent = 0L;
+
     @Builder
-    public Board(Long id, String title, String content, String writer) {
+    public Board(Long id, String writer, String title, String content, Long gno, Long ono, Long indent) {
         this.id = id;
+        this.writer = writer;
         this.title = title;
         this.content = content;
-        this.writer = writer;
+        this.gno = gno;
+        this.ono = ono;
+        this.indent = indent;
     }
+
+
+
+
 
 }

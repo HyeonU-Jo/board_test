@@ -16,6 +16,10 @@
         <button>수정</button>
     </a>
 
+    <a th:href="@{'/post/answer/' + ${boardDTO.id}}">
+        <button>답글</button>
+    </a>
+
     <form id="delete-form" th:action="@{'/post/' + ${boardDTO.id}}" method="post">
         <input type="hidden" name="_method" value="delete"/>
         <button id="delete-btn">삭제</button>

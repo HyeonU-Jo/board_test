@@ -66,6 +66,22 @@ public class BoardController {
         return "redirect:/";
     }
 
+    @GetMapping("/post/answer/{no}")
+    public String answer(@PathVariable("no") Long id, Model model) {
+        BoardDTO boardDTO = boardService.getPost(id);
+
+        model.addAttribute("boardDTO", boardDTO);
+
+        return "board/answer.html";
+    }
+
+    @PostMapping("/post/answer/{no}")
+    public String answerProc(@PathVariable("no") Long id, BoardDTO boardDTO) {
+        boardService.savePostAnswer(boardDTO, id);
+
+        return "redirect:/";
+    }
+
     @DeleteMapping("/post/{no}")
     public String delete(@PathVariable("no") Long id) {
         boardService.deletePost(id);

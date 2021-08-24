@@ -30,12 +30,17 @@ public class BoardService {
         return boardRepository.save(boardDTO.toEntity()).getId();
     }
 
+    @Transactional
+    public Long savePostAnswer(BoardDTO boardDTO, Long id) {
+        return boardRepository.save(boardDTO.toEntityAnswer(id)).getId();
+    }
+
     /*게시글 목록*/
     @Transactional
     public List<BoardDTO> getBoardList(Integer pageNum) {
         Page<Board> page = boardRepository
                 .findAll(PageRequest
-                        .of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
+                        .of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.DESC, "id", "gno")));
 
 //        List<Board> boards = boardRepository.findAll();
         List<Board> boards = page.getContent();
@@ -101,6 +106,9 @@ public class BoardService {
                 .writer(board.getWriter())
                 .content(board.getContent())
                 .createdDate(board.getCreatedDate())
+                .g_no(board.getGno())
+                .o_no(board.getOno())
+                .indent(board.getIndent())
                 .build();
 
         return boardDTO;
@@ -137,6 +145,9 @@ public class BoardService {
                 .writer(board.getWriter())
                 .content(board.getContent())
                 .createdDate(board.getCreatedDate())
+                .g_no(board.getGno())
+                .o_no(board.getOno())
+                .indent(board.getIndent())
                 .build();
     }
 }
