@@ -29,19 +29,23 @@ public class Board  extends TimeEntity{
     * 그룹 번호 group
     * 그룹 내 순서 order
     * 들여쓰기 indent
+    * 카운팅 count
     * */
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long gno;
 
     @Column
-    private Long ono = 0L;
+    private Long ono;
 
     @Column
-    private Long indent = 0L;
+    private Long indent;
+
+    @Column
+    private Long count;
 
     @Builder
-    public Board(Long id, String writer, String title, String content, Long gno, Long ono, Long indent) {
+    public Board(Long id, String writer, String title, String content, Long gno, Long ono, Long indent, Long count) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -49,6 +53,7 @@ public class Board  extends TimeEntity{
         this.gno = gno;
         this.ono = ono;
         this.indent = indent;
+        this.count = count;
     }
 
 

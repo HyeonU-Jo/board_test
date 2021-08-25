@@ -27,37 +27,82 @@ public class BoardDTO {
     private Long gno;
     private Long ono;
     private Long indent;
+    private Long count;
 
-    public Board toEntity(){
-        Board build = Board.builder()
-                .id(id)
-                .writer(writer)
-                .title(title)
-                .content(content)
-                .gno(id)
-                .ono(ono)
-                .indent(indent)
-                .build();
+    public Board toEntity(Long g_no) {
+        if (g_no == null) {
+            Board build = Board.builder()
+                    .id(id)
+                    .writer(writer)
+                    .title(title)
+                    .content(content)
+                    .gno(1L)
+                    .ono(0L)
+                    .indent(0L)
+                    .count(0L)
+                    .build();
+            return build;
+        } else {
 
-        return build;
+            Board build = Board.builder()
+                    .id(id)
+                    .writer(writer)
+                    .title(title)
+                    .content(content)
+                    .gno(g_no + 1L)
+                    .ono(0L)
+                    .indent(0L)
+                    .count(0L)
+                    .build();
+            return build;
+        }
+    }
+    public Board toEntityCount() {
+            Board build = Board.builder()
+                    .id(id)
+                    .writer(writer)
+                    .title(title)
+                    .content(content)
+                    .gno(gno)
+                    .ono(ono)
+                    .indent(indent)
+                    .count(count + 1L)
+                    .build();
+            return build;
     }
 
-    public Board toEntityAnswer(Long gg_no){
-        Board build = Board.builder()
-                .id(id)
-                .writer(writer)
-                .title(gg_no + "번 RE : " + title)
-                .content(content)
-                .gno(gg_no)
-                .ono(1L)
-                .indent(1L)
-                .build();
+    public Board toEntityAnswer(Long g_no, Long o_no, Long indent, Long count) {
+        if (o_no == 0) {
+            Board build = Board.builder()
+                    .id(id)
+                    .writer(writer)
+                    .title(title)
+                    .content(content)
+                    .gno(g_no)
+                    .ono(o_no + (count * 10L))
+                    .indent(indent + 1L)
+                    .count(0L)
+                    .build();
 
-        return build;
+            return build;
+        } else {
+            Board build = Board.builder()
+                    .id(id)
+                    .writer(writer)
+                    .title(title)
+                    .content(content)
+                    .gno(g_no)
+                    .ono(o_no + 1L)
+                    .indent(indent + 1L)
+                    .count(count + 1L)
+                    .build();
+
+            return build;
+        }
     }
 
     @Builder
-    public BoardDTO(Long id, String writer, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Long g_no, Long o_no, Long indent) {
+    public BoardDTO(Long id, String writer, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, Long gno, Long ono, Long indent, Long count) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -67,5 +112,6 @@ public class BoardDTO {
         this.gno = gno;
         this.ono = ono;
         this.indent = indent;
+        this.count = count;
     }
 }

@@ -14,6 +14,7 @@ public class BoardApplication {
         SpringApplication.run(BoardApplication.class, args);
     }
 
+    /*http 메소드를 사용하기 위한 추가*/
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new HiddenHttpMethodFilter();

@@ -18,7 +18,7 @@ public class BoardService {
 
     private BoardRepository boardRepository;
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 수
-    private static final int PAGE_POST_COUNT = 4; // 한 페이지에 존재하는 게시글 수
+    private static final int PAGE_POST_COUNT = 10; // 한 페이지에 존재하는 게시글 수
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
@@ -27,12 +27,16 @@ public class BoardService {
     /*게시글 작성*/
     @Transactional
     public Long savePost(BoardDTO boardDTO) {
-        return boardRepository.save(boardDTO.toEntity()).getId();
+        return boardRepository.save(boardDTO.toEntity(boardRepository.findLastID())).getId();
+    }
+    @Transactional
+    public Long savePostCount(BoardDTO boardDTO) {
+        return boardRepository.save(boardDTO.toEntityCount()).getId();
     }
 
     @Transactional
-    public Long savePostAnswer(BoardDTO boardDTO, Long id) {
-        return boardRepository.save(boardDTO.toEntityAnswer(id)).getId();
+    public Long savePostAnswer(BoardDTO boardDTO, Long id, Long ono, Long indent, Long count) {
+        return boardRepository.save(boardDTO.toEntityAnswer(id, ono, indent, count)).getId();
     }
 
     /*게시글 목록*/
@@ -40,7 +44,9 @@ public class BoardService {
     public List<BoardDTO> getBoardList(Integer pageNum) {
         Page<Board> page = boardRepository
                 .findAll(PageRequest
-                        .of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.DESC, "id", "gno")));
+                        .of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "gno", "ono")));
+
+        System.out.println(boardRepository.findLastID());
 
 //        List<Board> boards = boardRepository.findAll();
         List<Board> boards = page.getContent();
@@ -106,9 +112,10 @@ public class BoardService {
                 .writer(board.getWriter())
                 .content(board.getContent())
                 .createdDate(board.getCreatedDate())
-                .g_no(board.getGno())
-                .o_no(board.getOno())
+                .gno(board.getGno())
+                .ono(board.getOno())
                 .indent(board.getIndent())
+                .count(board.getCount())
                 .build();
 
         return boardDTO;
@@ -145,8 +152,8 @@ public class BoardService {
                 .writer(board.getWriter())
                 .content(board.getContent())
                 .createdDate(board.getCreatedDate())
-                .g_no(board.getGno())
-                .o_no(board.getOno())
+                .gno(board.getGno())
+                .ono(board.getOno())
                 .indent(board.getIndent())
                 .build();
     }

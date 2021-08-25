@@ -2,35 +2,34 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Detail</title>
+
+    <link rel="stylesheet" th:href="@{/css/board.css}">
+
 </head>
 <body>
-<h2 th:text="${boardDTO.title}"></h2>
-<p th:inline="text">작성일 : [[${#temporals.format(boardDTO.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
+<div class="form detail">
+    <h2 th:text="${boardDTO.title}"></h2>
+    <p th:inline="text">작성일 : [[${#temporals.format(boardDTO.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
 
-<p th:text="${boardDTO.content}"></p>
+    <p th:text="${boardDTO.content}"></p>
 
-<!-- 수정/삭제 -->
-<div>
-    <a th:href="@{'/post/edit/' + ${boardDTO.id}}">
-        <button>수정</button>
-    </a>
+    <!-- 수정/삭제 -->
+    <div>
+        <a th:href="@{'/post/edit/' + ${boardDTO.id}}">
+            <button>수정</button>
+        </a>
 
-    <a th:href="@{'/post/answer/' + ${boardDTO.id}}">
-        <button>답글</button>
-    </a>
+        <a th:href="@{'/post/answer/' + ${boardDTO.id}}">
+            <button>답글</button>
+        </a>
 
-    <form id="delete-form" th:action="@{'/post/' + ${boardDTO.id}}" method="post">
-        <input type="hidden" name="_method" value="delete"/>
-        <button id="delete-btn">삭제</button>
-    </form>
+        <form id="delete-form" th:action="@{'/post/' + ${boardDTO.id}}" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+            <button id="delete-btn">삭제</button>
+        </form>
+    </div>
+
 </div>
-
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var boardDto = /*[[${boardDto}]]*/ "";
-    /*]]>*/
-</script>
-<script th:inline="javascript" th:src="@{/js/board.js}"></script>
 </body>
 </html>

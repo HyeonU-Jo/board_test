@@ -1,6 +1,6 @@
 package com.test.board.controller;
 
-import com.test.board.domain.entity.Board;
+import com.test.board.domain.repository.BoardRepository;
 import com.test.board.dto.BoardDTO;
 import com.test.board.service.BoardService;
 import org.springframework.stereotype.Controller;
@@ -13,9 +13,11 @@ import java.util.List;
 public class BoardController {
 
     private BoardService boardService;
+    private BoardRepository boardRepository;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, BoardRepository boardRepository) {
         this.boardService = boardService;
+        this.boardRepository = boardRepository;
     }
 
     @GetMapping("/")
@@ -77,7 +79,9 @@ public class BoardController {
 
     @PostMapping("/post/answer/{no}")
     public String answerProc(@PathVariable("no") Long id, BoardDTO boardDTO) {
-        boardService.savePostAnswer(boardDTO, id);
+        BoardDTO dto = boardService.getPost(id);
+        boardService.savePostCount(dto);
+        boardService.savePostAnswer(boardDTO, dto.getGno(), dto.getOno(), dto.getIndent(), dto.getCount());
 
         return "redirect:/";
     }

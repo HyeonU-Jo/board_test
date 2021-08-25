@@ -18,11 +18,20 @@ footer {
 }
 
 #wrap {
-    padding: 15% 0%;
+    padding: 10% 0%;
 }
 
+
 #wrap > * {
-    margin: 3% 0%;
+    margin: 0 auto;
+}
+
+#wrap table * {
+    border-color: #e1e1e1;
+}
+
+#wrap table {
+    width: 700px;
 }
 
 .search {
@@ -31,4 +40,60 @@ footer {
 
 a {
     text-decoration: none;
+}
+
+.table {
+    text-align: center;
+}
+
+.table table {
+    margin: 30px auto;
+}
+
+.table tr {
+    height: 40px;
+}
+
+.title {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.form {
+    border: solid 1px;
+    border-radius: 30px;
+    border-color: #e1e1e1;
+    margin: 300px auto;
+    width: 700px;
+}
+
+.form form {
+    text-align: center;
+}
+
+.form form > * {
+    padding: 10px;
+    margin: 30px;
+    border-radius: 10px;
+    border-color: #e1e1e1;
+}
+
+.form textarea {
+    width: 500px;
+    height: 300px;
+}
+
+.detail * {
+    text-align: center;
+}
+
+.detail p:nth-child(3) {
+    width: 500px;
+    border: solid 1px;
+    border-radius: 10px;
+    min-height: 500px;
+    margin: 30px auto;
+    text-align: left;
+    padding: 15px;
+
 }
