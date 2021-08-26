@@ -12,4 +12,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("select max(b.id) from Board b")
     Long findLastID();
+
+
+    void deleteByGno(Long id);
 }

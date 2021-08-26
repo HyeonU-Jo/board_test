@@ -17,8 +17,8 @@ import java.util.Optional;
 public class BoardService {
 
     private BoardRepository boardRepository;
-    private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 수
-    private static final int PAGE_POST_COUNT = 10; // 한 페이지에 존재하는 게시글 수
+    private static final int BLOCK_PAGE_NUM_COUNT = 2; // 블럭에 존재하는 페이지 수 ==> 현재 페이지 뒤에 올 페이지 개수
+    private static final int PAGE_POST_COUNT = 3; // 한 페이지에 존재하는 게시글 수
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
@@ -29,6 +29,7 @@ public class BoardService {
     public Long savePost(BoardDTO boardDTO) {
         return boardRepository.save(boardDTO.toEntity(boardRepository.findLastID())).getId();
     }
+
     @Transactional
     public Long savePostCount(BoardDTO boardDTO) {
         return boardRepository.save(boardDTO.toEntityCount()).getId();
@@ -44,9 +45,8 @@ public class BoardService {
     public List<BoardDTO> getBoardList(Integer pageNum) {
         Page<Board> page = boardRepository
                 .findAll(PageRequest
-                        .of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "gno", "ono")));
+                        .of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.DESC, "gno").and(Sort.by("ono").ascending())));
 
-        System.out.println(boardRepository.findLastID());
 
 //        List<Board> boards = boardRepository.findAll();
         List<Board> boards = page.getContent();
@@ -71,7 +71,7 @@ public class BoardService {
 
     /*게시글 페이징*/
     public Integer[] getPageList(Integer curPageNum) {
-        Integer[] pageList = new Integer[BLOCK_PAGE_NUM_COUNT];
+        Integer[] pageList;
 
         // 총 게시글 수
         Double postsTotalCount = Double.valueOf(this.getBoardCount());
@@ -82,7 +82,14 @@ public class BoardService {
         // 현재 페이지를 기준으로 블럭의 마지막 페이지 번호 계산
         Integer blockLastPageNum = (totalLastPageNum > curPageNum + BLOCK_PAGE_NUM_COUNT)
                 ? curPageNum + BLOCK_PAGE_NUM_COUNT
+//                : curPageNum + 2;
                 : totalLastPageNum;
+
+//        if (blockLastPageNum > totalLastPageNum) {
+//            blockLastPageNum = totalLastPageNum;
+//        }
+
+        pageList = new Integer[totalLastPageNum];
 
         // 페이지 시작 번호 조정
         curPageNum = (curPageNum <= 3) ? 1 : curPageNum - 2;
@@ -124,7 +131,13 @@ public class BoardService {
     /*게시글 삭제*/
     @Transactional
     public void deletePost(Long id) {
-        boardRepository.deleteById(id);
+        BoardDTO boardDTO = getPost(id);
+
+        if (id.equals(boardDTO.getGno())) {
+            boardRepository.deleteByGno(id);
+        } else {
+            boardRepository.deleteById(id);
+        }
     }
 
     /*게시글 검색*/

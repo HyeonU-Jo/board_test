@@ -64,9 +64,11 @@
             </tbody>
         </table>
         <div>
-    <span th:each="pageNum : ${pageList}" th:inline="text">
-        <a th:href="@{'/?page=' + ${pageNum}}">[[${pageNum}]]</a>
-    </span>
+            <a th:href="@{'/?page=1'}"><<</a>
+            <span th:each="pageNum : ${pageList}" th:inline="text">
+                <a th:href="@{'/?page=' + ${pageNum}}">[[${pageNum}]]</a>
+            </span>
+            <a th:href="@{'/?page=' + ${pageList.length}}">>></a>
         </div>
     </div>
 </div>
