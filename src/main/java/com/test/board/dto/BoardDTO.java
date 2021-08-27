@@ -30,75 +30,107 @@ public class BoardDTO {
     private Long count;
 
     public Board toEntity(Long g_no) {
-        if (g_no == null) {
-            Board build = Board.builder()
-                    .id(id)
-                    .writer(writer)
-                    .title(title)
-                    .content(content)
-                    .gno(1L)
-                    .ono(0L)
-                    .indent(0L)
-                    .count(0L)
-                    .build();
-            return build;
-        } else {
+        Long i = (g_no == null) ? 1L : g_no + 1L;
 
-            Board build = Board.builder()
-                    .id(id)
-                    .writer(writer)
-                    .title(title)
-                    .content(content)
-                    .gno(g_no + 1L)
-                    .ono(0L)
-                    .indent(0L)
-                    .count(0L)
-                    .build();
-            return build;
-        }
+//        if (g_no == null) {
+//            i = 1L;
+//        }else{
+//            i = g_no + 1L;
+//        }
+
+//        if (g_no == null) {
+        Board build = Board.builder()
+                .id(id)
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .gno(i)
+                .ono(0L)
+                .indent(0L)
+                .count(0L)
+                .build();
+        return build;
+//        } else {
+//
+//            Board build = Board.builder()
+//                    .id(id)
+//                    .writer(writer)
+//                    .title(title)
+//                    .content(content)
+//                    .gno(g_no + 1L)
+//                    .ono(0L)
+//                    .indent(0L)
+//                    .count(0L)
+//                    .build();
+//            return build;
+//        }
     }
+
     public Board toEntityCount() {
-            Board build = Board.builder()
-                    .id(id)
-                    .writer(writer)
-                    .title(title)
-                    .content(content)
-                    .gno(gno)
-                    .ono(ono)
-                    .indent(indent)
-                    .count(count + 1L)
-                    .build();
-            return build;
+        Board build = Board.builder()
+                .id(id)
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .gno(gno)
+                .ono(ono)
+                .indent(indent)
+                .count(count + 1L)
+                .build();
+        return build;
     }
 
     public Board toEntityAnswer(Long g_no, Long o_no, Long indent, Long count) {
-        if (o_no == 0) {
-            Board build = Board.builder()
-                    .id(id)
-                    .writer(writer)
-                    .title(title)
-                    .content(content)
-                    .gno(g_no)
-                    .ono(o_no + (count * 10L))
-                    .indent(indent + 1L)
-                    .count(0L)
-                    .build();
+        Long i;
 
-            return build;
-        } else {
-            Board build = Board.builder()
-                    .id(id)
-                    .writer(writer)
-                    .title(title)
-                    .content(content)
-                    .gno(g_no)
-                    .ono(o_no + 1L)
-                    .indent(indent + 1L)
-                    .count(count + 1L)
-                    .build();
 
-            return build;
+//        Long i = (indent == 0L) ? count * 100L : 10L;
+//        if (indent > 0L) {
+//            i = 1L;
+//        }
+
+        switch (Math.toIntExact(indent)) {
+            case 0:
+                i = 1000L + (count * 1000L);
+                break;
+            case 1:
+                i = 100L + (count * 100L);
+                break;
+            case 2:
+                i = 10L + (count * 10L);
+                break;
+            default:
+                i = 1L;
+                break;
         }
+
+//        if (indent == 0L) {
+        Board build = Board.builder()
+                .id(id)
+                .writer(writer)
+                .title(title)
+                .content(content)
+                .gno(g_no)
+                .ono(o_no + (i))
+                .indent(indent + 1L)
+                .count(0L)
+                .build();
+
+        return build;
+//        } else {
+//            Board build = Board.builder()
+//                    .id(id)
+//                    .writer(writer)
+//                    .title(title)
+//                    .content(content)
+//                    .gno(g_no)
+//                    .ono(o_no + 1L)
+//                    .indent(indent + 1L)
+//                    .count(0L)
+//                    .build();
+//
+//            return build;
+//        }
     }
 
     @Builder
