@@ -19,9 +19,10 @@ public class BoardDTO {
     private LocalDateTime modifiedDate;
 
     /*
-     * 그룹 번호 group
-     * 그룹 내 순서 order
+     * 그룹 번호 group_no
+     * 그룹 내 순서 order_no
      * 들여쓰기 indent
+     * 카운팅 count
      * */
 
     private Long gno;
